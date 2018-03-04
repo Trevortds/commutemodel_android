@@ -1,6 +1,5 @@
 package com.etymachine.commutemodel;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,10 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.etymachine.commutemodel.db.AppDatabase;
+
 public class NavDrawer extends AppCompatActivity
         //Note : OnFragmentInteractionListener of all the fragments
         implements
-        Fragment1.OnFragmentInteractionListener,
+        FragmentMainPage.OnFragmentInteractionListener,
         Fragment2.OnFragmentInteractionListener,
         Fragment3.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,7 +54,7 @@ public class NavDrawer extends AppCompatActivity
 
         //NOTE:  Open fragment1 initially.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.mainFrame, new Fragment1());
+        ft.replace(R.id.mainFrame, new FragmentMainPage());
         ft.commit();
     }
 
@@ -99,12 +100,12 @@ public class NavDrawer extends AppCompatActivity
         Fragment fragment = null;
 
         if (id == R.id.nav_frag1) {
-            fragment= new Fragment1();
+            fragment= new FragmentMainPage();
         } else if (id == R.id.nav_frag2) {
             fragment= new Fragment2();
         } else if (id == R.id.nav_frag3) {
             fragment= new Fragment3();
-        } 
+        }
 
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -116,6 +117,12 @@ public class NavDrawer extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        AppDatabase.destroyInstance();
+        super.onDestroy();
     }
 
     @Override
