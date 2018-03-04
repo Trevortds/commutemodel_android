@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Commute Model</string>
+    <string name="fortune_description">Suggest the question, which you can answer “yes” or “no”, then click on the magic ball.</string>
+</resources>
