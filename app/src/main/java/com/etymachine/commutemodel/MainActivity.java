@@ -8,8 +8,12 @@ import android.widget.ProgressBar;
 
 import com.etymachine.commutemodel.db.AppDatabase;
 import com.etymachine.commutemodel.db.DatabaseInitializer;
+import com.etymachine.commutemodel.db.TimeEntry;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private List<TimeEntry> returnedResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +23,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void populateTestData(View view) {
         DatabaseInitializer.populateAsync(AppDatabase.getAppDatabase(this));
-        private ProgressBar spinner;
+        final ProgressBar spinner;
         spinner = (ProgressBar) findViewById(R.id.progressBar);
         spinner.setVisibility(View.VISIBLE);
+        DatabaseInitializer.getAllAsync(AppDatabase.getAppDatabase(this),
+                new DatabaseInitializer.GetAllAsync.AsyncResponse() {
+                    @Override
+                    public void processFinish(List<TimeEntry> result) {
+                        spinner.setVisibility(View.GONE);
+                        Log.v("DEBUG", result.toString());
+                        returnedResult = result;
+                    }
+                });
 
-        Log.v("DEBUG", AppDatabase.getAppDatabase(this).timeEntryDao().getAll().toString());
-        spinner.setVisibility(View.GONE);
     }
 
     @Override

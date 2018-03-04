@@ -26,8 +26,8 @@ public class DatabaseInitializer {
         populateWithTestData(db);
     }
 
-    public static void getAllAsync(@NonNull final AppDatabase db) {
-        GetAllAsync task = new GetAllAsync(db);
+    public static void getAllAsync(@NonNull final AppDatabase db, GetAllAsync.AsyncResponse delegate) {
+        GetAllAsync task = new GetAllAsync(db, delegate);
         task.execute();
     }
 
@@ -67,19 +67,32 @@ public class DatabaseInitializer {
 
     }
 
-    private static class GetAllAsync extends AsyncTask<Void, Void, Void> {
+    public static class GetAllAsync extends AsyncTask<Void, Void, List<TimeEntry>> {
+
+        public interface AsyncResponse {
+            void processFinish(List<TimeEntry> result);
+        }
 
         private final AppDatabase mDb;
+        public AsyncResponse delegate = null;
 
-        GetAllAsync(AppDatabase db) {
+        GetAllAsync(AppDatabase db, AsyncResponse delegate) {
             mDb = db;
+            this.delegate = delegate;
         }
 
         @Override
-        protected Void doInBackground(final Void... params) {
-            getall(mDb);
-            return null;
+        protected List<TimeEntry> doInBackground(final Void... params) {
+            return getall(mDb);
+
         }
+
+        @Override
+        protected  void onPostExecute(List<TimeEntry> result){
+            this.delegate.processFinish(result);
+        }
+
+
 
     }
 }
