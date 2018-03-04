@@ -2,4 +2,10 @@
     <string name="app_name">Commute Model</string>
     <string name="fortune_description">Suggest the question, which you can answer “yes” or “no”, then click on the magic ball.</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_nav_drawer">NavDrawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
